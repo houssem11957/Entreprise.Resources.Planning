@@ -1,4 +1,5 @@
-﻿using DataAccess.Entities.Settings.BaseEntities;
+﻿using DataAccess.Entities.Security;
+using DataAccess.Entities.Settings.BaseEntities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

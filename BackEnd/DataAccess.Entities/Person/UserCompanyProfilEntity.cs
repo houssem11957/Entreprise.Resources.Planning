@@ -1,5 +1,6 @@
 ﻿using DataAccess.Entities.Attendance;
 using DataAccess.Entities.PayRoll;
+using DataAccess.Entities.Security;
 using DataAccess.Entities.Settings.BaseEntities;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace DataAccess.Entities.Person
         public ICollection<LeavesEntity> Leaves { get; set; }
         public ICollection<WorkingTimeScheduleEntity> WorkingTimeSchedules { get; set; }
         public ICollection<EmployeeCategoryEntity> EmployeeCategories { get; set; }
-        public ICollection<PublicHolidaysEntity> PublicHolidays { get; set; } // Holidays linked to the user
+        public IEnumerable<PublicHolidaysEntity> PublicHolidays { get; set; } // Holidays linked to the user
 
     }
 }

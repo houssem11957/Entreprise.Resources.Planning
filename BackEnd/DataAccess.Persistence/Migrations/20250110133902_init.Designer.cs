@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Persistence.Migrations
 {
     [DbContext(typeof(ERPDbContext))]
-    [Migration("20250109152304_payrollSchema1")]
-    partial class payrollSchema1
+    [Migration("20250110133902_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -223,29 +223,19 @@ namespace DataAccess.Persistence.Migrations
                     b.Property<int>("LastModifiedBy")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProfilesUserCompanyProfilId")
-                        .HasColumnType("int");
-
                     b.Property<int>("PublicHolidaysId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PublicHolidaysId1")
-                        .HasColumnType("int");
-
-                    b.Property<int>("profileUserCompanyProfilId")
+                    b.Property<int>("UserCompanyProfilId")
                         .HasColumnType("int");
 
                     b.HasKey("UserPublicHolidayId");
 
-                    b.HasIndex("ProfilesUserCompanyProfilId");
-
                     b.HasIndex("PublicHolidaysId");
 
-                    b.HasIndex("PublicHolidaysId1");
+                    b.HasIndex("UserCompanyProfilId");
 
-                    b.HasIndex("profileUserCompanyProfilId");
-
-                    b.ToTable("UserPublicHolidayEntity");
+                    b.ToTable("UserPublicHoliday");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.PayRoll.PublicHolidaysEntity", b =>
@@ -672,6 +662,21 @@ namespace DataAccess.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PublicHolidaysEntityUserCompanyProfileEntity", b =>
+                {
+                    b.Property<int>("ProfilesUserCompanyProfilId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PublicHolidaysId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProfilesUserCompanyProfilId", "PublicHolidaysId");
+
+                    b.HasIndex("PublicHolidaysId");
+
+                    b.ToTable("PublicHolidaysEntityUserCompanyProfileEntity");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.Attendance.LeavesEntity", b =>
                 {
                     b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "Profile")
@@ -707,33 +712,21 @@ namespace DataAccess.Persistence.Migrations
 
             modelBuilder.Entity("DataAccess.Entities.CommunEntities.UserPublicHolidayEntity", b =>
                 {
-                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", null)
-                        .WithMany()
-                        .HasForeignKey("ProfilesUserCompanyProfilId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccess.Entities.PayRoll.PublicHolidaysEntity", null)
+                    b.HasOne("DataAccess.Entities.PayRoll.PublicHolidaysEntity", "PublicHoliday")
                         .WithMany()
                         .HasForeignKey("PublicHolidaysId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Entities.PayRoll.PublicHolidaysEntity", "PublicHoliday")
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "Profile")
                         .WithMany()
-                        .HasForeignKey("PublicHolidaysId1")
+                        .HasForeignKey("UserCompanyProfilId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "profile")
-                        .WithMany()
-                        .HasForeignKey("profileUserCompanyProfilId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Profile");
 
                     b.Navigation("PublicHoliday");
-
-                    b.Navigation("profile");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Person.BankingInformationsEntity", b =>
@@ -811,6 +804,21 @@ namespace DataAccess.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("PublicHolidaysEntityUserCompanyProfileEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ProfilesUserCompanyProfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entities.PayRoll.PublicHolidaysEntity", null)
+                        .WithMany()
+                        .HasForeignKey("PublicHolidaysId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Person.UserCompanyProfileEntity", b =>

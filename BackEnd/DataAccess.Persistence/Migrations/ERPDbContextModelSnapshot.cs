@@ -200,6 +200,41 @@ namespace DataAccess.Persistence.Migrations
                     b.ToTable("WorkingTimeSchedules");
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.CommunEntities.UserPublicHolidayEntity", b =>
+                {
+                    b.Property<int>("UserPublicHolidayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserPublicHolidayId"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PublicHolidaysId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserCompanyProfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserPublicHolidayId");
+
+                    b.HasIndex("PublicHolidaysId");
+
+                    b.HasIndex("UserCompanyProfilId");
+
+                    b.ToTable("UserPublicHoliday");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.PayRoll.PublicHolidaysEntity", b =>
                 {
                     b.Property<int>("PublicHolidaysId")
@@ -393,7 +428,10 @@ namespace DataAccess.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeEvaluationId"));
 
                     b.Property<decimal>("AttendanceScore")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(10, 4)
+                        .HasColumnType("decimal")
+                        .HasDefaultValue(20m);
 
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
@@ -420,7 +458,10 @@ namespace DataAccess.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("PerformanceScore")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(10, 4)
+                        .HasColumnType("decimal")
+                        .HasDefaultValue(100m);
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -670,6 +711,25 @@ namespace DataAccess.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.CommunEntities.UserPublicHolidayEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.PayRoll.PublicHolidaysEntity", "PublicHoliday")
+                        .WithMany()
+                        .HasForeignKey("PublicHolidaysId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "Profile")
+                        .WithMany()
+                        .HasForeignKey("UserCompanyProfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+
+                    b.Navigation("PublicHoliday");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Person.BankingInformationsEntity", b =>

@@ -1,4 +1,4 @@
-﻿using DataAccess.Entities.Person;
+﻿using DataAccess.Entities.Security;
 using DataAccess.Entities.Settings.BaseEntities;
 using System;
 using System.Collections.Generic;

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Persistence.Migrations
 {
     [DbContext(typeof(ERPDbContext))]
-    [Migration("20250108140947_init")]
-    partial class init
+    [Migration("20250110135008_init3")]
+    partial class init3
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,272 @@ namespace DataAccess.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DataAccess.Entities.Attendance.LeavesEntity", b =>
+                {
+                    b.Property<int>("LeaveId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LeaveId"));
+
+                    b.Property<DateTime?>("ApprovedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ApprovedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LeaveType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RejectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RejectedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TotalDays")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserCompanyProfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("LeaveId");
+
+                    b.HasIndex("UserCompanyProfilId");
+
+                    b.ToTable("Leaves");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Attendance.PointageEntity", b =>
+                {
+                    b.Property<int>("PointageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PointageId"));
+
+                    b.Property<DateTime>("ClockIn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("ClockOut")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("TotalHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PointageId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Pointages");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Attendance.WorkingTimeScheduleEntity", b =>
+                {
+                    b.Property<int>("ScheduleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ScheduleId"));
+
+                    b.Property<TimeSpan>("BreakDuration")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Comments")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EffectiveDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("EndDay")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShiftType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StartDay")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.Property<int>("TotalWorkingHours")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserCompanyProfilId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WorkDays")
+                        .HasColumnType("int");
+
+                    b.HasKey("ScheduleId");
+
+                    b.HasIndex("UserCompanyProfilId");
+
+                    b.ToTable("WorkingTimeSchedules");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.CommunEntities.UserPublicHolidayEntity", b =>
+                {
+                    b.Property<int>("UserPublicHolidayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserPublicHolidayId"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PublicHolidaysId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserCompanyProfilId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserPublicHolidayId");
+
+                    b.HasIndex("PublicHolidaysId");
+
+                    b.HasIndex("UserCompanyProfilId");
+
+                    b.ToTable("UserPublicHoliday");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.PayRoll.PublicHolidaysEntity", b =>
+                {
+                    b.Property<int>("PublicHolidaysId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PublicHolidaysId"));
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsPublicHoliday")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsRecurring")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Region")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("PublicHolidaysId");
+
+                    b.ToTable("PublicHolidays");
+                });
 
             modelBuilder.Entity("DataAccess.Entities.Person.BankingInformationsEntity", b =>
                 {
@@ -63,7 +329,7 @@ namespace DataAccess.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BankingInformations");
+                    b.ToTable("ERP_BankingInformations_Table");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Person.BiomitricInformationsEntity", b =>
@@ -119,6 +385,43 @@ namespace DataAccess.Persistence.Migrations
                     b.ToTable("BiomitricInformations");
                 });
 
+            modelBuilder.Entity("DataAccess.Entities.Person.EmployeeCategoryEntity", b =>
+                {
+                    b.Property<int>("EmployeeCategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeCategoryId"));
+
+                    b.Property<int>("CreatedBy")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsMandatory")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("LastModifiedBy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserProfileId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EmployeeCategoryId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("EmployeeCategories");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.Person.EmployeeEvaluationEntity", b =>
                 {
                     b.Property<int>("EmployeeEvaluationId")
@@ -128,7 +431,10 @@ namespace DataAccess.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeEvaluationId"));
 
                     b.Property<decimal>("AttendanceScore")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(10, 4)
+                        .HasColumnType("decimal")
+                        .HasDefaultValue(20m);
 
                     b.Property<string>("Comments")
                         .HasColumnType("nvarchar(max)");
@@ -155,7 +461,10 @@ namespace DataAccess.Persistence.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("PerformanceScore")
-                        .HasColumnType("decimal(18,2)");
+                        .ValueGeneratedOnAdd()
+                        .HasPrecision(10, 4)
+                        .HasColumnType("decimal")
+                        .HasDefaultValue(100m);
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -270,7 +579,7 @@ namespace DataAccess.Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Sanctions");
+                    b.ToTable("ERP_Sanctions_Table");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Person.UserCompanyProfileEntity", b =>
@@ -359,6 +668,73 @@ namespace DataAccess.Persistence.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PublicHolidaysEntityUserCompanyProfileEntity", b =>
+                {
+                    b.Property<int>("ProfilesUserCompanyProfilId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PublicHolidaysId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProfilesUserCompanyProfilId", "PublicHolidaysId");
+
+                    b.HasIndex("PublicHolidaysId");
+
+                    b.ToTable("PublicHolidaysEntityUserCompanyProfileEntity");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Attendance.LeavesEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "Profile")
+                        .WithMany("Leaves")
+                        .HasForeignKey("UserCompanyProfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Attendance.PointageEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.Person.UserEntity", "user")
+                        .WithMany("Pointages")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("user");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Attendance.WorkingTimeScheduleEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "Profile")
+                        .WithMany("WorkingTimeSchedules")
+                        .HasForeignKey("UserCompanyProfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.CommunEntities.UserPublicHolidayEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.PayRoll.PublicHolidaysEntity", "PublicHoliday")
+                        .WithMany()
+                        .HasForeignKey("PublicHolidaysId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "Profile")
+                        .WithMany()
+                        .HasForeignKey("UserCompanyProfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+
+                    b.Navigation("PublicHoliday");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.Person.BankingInformationsEntity", b =>
                 {
                     b.HasOne("DataAccess.Entities.Person.UserEntity", "User")
@@ -379,6 +755,17 @@ namespace DataAccess.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Person.EmployeeCategoryEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", "UserProfile")
+                        .WithMany("EmployeeCategories")
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserProfile");
                 });
 
             modelBuilder.Entity("DataAccess.Entities.Person.EmployeeEvaluationEntity", b =>
@@ -425,6 +812,30 @@ namespace DataAccess.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("PublicHolidaysEntityUserCompanyProfileEntity", b =>
+                {
+                    b.HasOne("DataAccess.Entities.Person.UserCompanyProfileEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ProfilesUserCompanyProfilId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("DataAccess.Entities.PayRoll.PublicHolidaysEntity", null)
+                        .WithMany()
+                        .HasForeignKey("PublicHolidaysId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("DataAccess.Entities.Person.UserCompanyProfileEntity", b =>
+                {
+                    b.Navigation("EmployeeCategories");
+
+                    b.Navigation("Leaves");
+
+                    b.Navigation("WorkingTimeSchedules");
+                });
+
             modelBuilder.Entity("DataAccess.Entities.Person.UserEntity", b =>
                 {
                     b.Navigation("BankingInformations");
@@ -436,6 +847,8 @@ namespace DataAccess.Persistence.Migrations
 
                     b.Navigation("PersonContactInformations")
                         .IsRequired();
+
+                    b.Navigation("Pointages");
 
                     b.Navigation("Sanctions");
 

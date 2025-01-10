@@ -22,8 +22,8 @@ namespace DataAccess.Entities.CommunEntities
         [NotNull]
         public int UserPublicHolidayId { get; set; }
         public int UserCompanyProfilId { get; set; }
-        public UserCompanyProfileEntity profile { get; set; }
+        public virtual UserCompanyProfileEntity Profile { get; set; }
         public int PublicHolidaysId { get; set; }
-        public PublicHolidaysEntity PublicHoliday { get; set; }
+        public virtual PublicHolidaysEntity PublicHoliday { get; set; }
     }
 }
