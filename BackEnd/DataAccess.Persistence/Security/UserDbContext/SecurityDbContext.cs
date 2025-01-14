@@ -12,6 +12,7 @@ namespace DataAccess.Persistence.Security.UserDbContext
 	{
 		public SecurityDbContext()
 		{
+
 		}
 	}
 }

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Entities.Security
 {
-	public class UserEntity: Microsoft.AspNetCore.Identity.IdentityUser<int>
+	public class UserEntity: Microsoft.AspNetCore.Identity.IdentityUser
 	{
 		public UserEntity()
 		{
@@ -21,7 +21,7 @@ namespace DataAccess.Entities.Security
 		[Key]
 		[Required]
 		[NotNull]
-		public override int Id { get; set; }
+		public new  int Id { get; set; }
 		[NotMapped]
 		public override string PhoneNumber { get; set; }
 		public string FamilyName { get; set; }
