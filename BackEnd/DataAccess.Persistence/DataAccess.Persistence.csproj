@@ -33,7 +33,6 @@
     <Folder Include="Contracts\Repository\" />
     <Folder Include="Implementation\Services\" />
     <Folder Include="Implementation\Repository\" />
-    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

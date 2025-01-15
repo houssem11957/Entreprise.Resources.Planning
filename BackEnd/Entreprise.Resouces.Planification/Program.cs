@@ -1,7 +1,6 @@
 
 using DataAccess.Entities.Security;
 using DataAccess.Persistence.ApplicationDbContext;
-using DataAccess.Persistence.Security.UserDbContext;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -31,20 +30,17 @@ namespace Entreprise.Resouces.Planification
 				tokenOptions.Validate();
 			});
 
-			builder.Services.AddAuthorization( options => {
-				options.AddPolicy("Nice",new Microsoft.AspNetCore.Authorization.AuthorizationPolicy(new List<ClaimsAuthorizationRequirement>(),new List<string>()));
+			builder.Services.AddAuthorization(options =>
+			{
+				options.AddPolicy("Nice", new Microsoft.AspNetCore.Authorization.AuthorizationPolicy(new List<ClaimsAuthorizationRequirement>(), new List<string>()));
 			});
 
-			//builder.Services.
-			builder.Services.AddDbContext<ERPDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("defaultconnection")));
-			builder.Services.AddDbContext<SecurityDbContext>(X => X.UseSqlServer(builder.Configuration.GetConnectionString("Identityconnection")));
+			builder.Services.AddDbContext<ERPDbContext>(options =>
+				options.UseSqlServer(builder.Configuration.GetConnectionString("defaultconnection")));
 
-			builder.Services.AddIdentityCore<UserEntity>()
-				.AddEntityFrameworkStores<SecurityDbContext>()
-				.AddRoleManager<RoleManager<IdentityRole>>()
-				.AddSignInManager<SignInManager<UserEntity>>()
-				.AddUserManager<UserManager<UserEntity>>()
-				.AddApiEndpoints();
+			builder.Services.AddIdentity<UserEntity, ErpRole>()
+				.AddEntityFrameworkStores<ERPDbContext>()
+				.AddDefaultTokenProviders();
 
 
 			var app = builder.Build();

@@ -1,28 +1,15 @@
 ﻿using DataAccess.Entities.Attendance;
 using DataAccess.Entities.Person;
-using DataAccess.Entities.Settings.BaseEntities;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Entities.Security
 {
-	public class UserEntity: Microsoft.AspNetCore.Identity.IdentityUser
+	public class UserEntity: Microsoft.AspNetCore.Identity.IdentityUser<int>
 	{
 		public UserEntity()
 		{
 		}
-		[Key]
-		[Required]
-		[NotNull]
-		public new  int Id { get; set; }
-		[NotMapped]
+
+		public override int Id { get; set; }
 		public override string PhoneNumber { get; set; }
 		public string FamilyName { get; set; }
 		public string FirstName { get; set; }
@@ -37,6 +24,8 @@ namespace DataAccess.Entities.Security
 		public UserCompanyProfileEntity UserCompanyProfil { get; set; }
 		public BiomitricInformationsEntity BiomitricInformations { get; set; }
 		public ICollection<PointageEntity> Pointages { get; set; }
+		public ICollection<ErpUserRole> UserRoles { get; set; }
+
 
 	}
 }

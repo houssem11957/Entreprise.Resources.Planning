@@ -2,20 +2,19 @@
 using DataAccess.Entities.PayRoll;
 using DataAccess.Entities.Person;
 using DataAccess.Entities.Security;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.Identity.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Persistence.ApplicationDbContext
 {
-	public class ERPDbContext: DbContext
+	public class ERPDbContext: IdentityDbContext<UserEntity, ErpRole, int,
+										IdentityUserClaim<int>, ErpUserRole,
+										IdentityUserLogin<int>, IdentityRoleClaim<int>,
+										IdentityUserToken<int>>
+
 	{
-		public ERPDbContext(DbContextOptions config) : base(config)
+		public ERPDbContext(DbContextOptions<ERPDbContext> options) : base(options)
 		{
 
 		}
@@ -43,11 +42,11 @@ namespace DataAccess.Persistence.ApplicationDbContext
 				);
 
 			// EmployEEeVALUATION
-			modelBuilder.Entity<EmployeeEvaluationEntity>().Property(x => x.AttendanceScore).HasColumnType("decimal").HasPrecision(10,4).HasDefaultValue(20.00);
-			modelBuilder.Entity<EmployeeEvaluationEntity>().Property(x => x.PerformanceScore).HasColumnType("decimal").HasPrecision(10,4).HasDefaultValue(100.00);
+			modelBuilder.Entity<EmployeeEvaluationEntity>().Property(x => x.AttendanceScore).HasColumnType("decimal").HasPrecision(10, 4).HasDefaultValue(20.00);
+			modelBuilder.Entity<EmployeeEvaluationEntity>().Property(x => x.PerformanceScore).HasColumnType("decimal").HasPrecision(10, 4).HasDefaultValue(100.00);
 			modelBuilder.Entity<EmployeeEvaluationEntity>(EmployeeEvaluation =>
 			{
-				
+
 				EmployeeEvaluation.HasOne(x => x.User)
 				.WithMany(u => u.EmployeeEvaluation)
 				.HasForeignKey(f => f.UserId)
@@ -127,6 +126,22 @@ namespace DataAccess.Persistence.ApplicationDbContext
 					.WithMany()
 					.HasForeignKey(e => e.PublicHolidaysId)
 					.OnDelete(DeleteBehavior.Cascade);
+			});
+
+			modelBuilder.Entity<ErpUserRole>(userRole =>
+			{
+				//add composed primary key (user id ,role id)
+				userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
+
+				userRole.HasOne(ur => ur.Role)
+					.WithMany(r => r.UserRoles)
+					.HasForeignKey(ur => ur.RoleId)
+					.IsRequired();
+
+				userRole.HasOne(ur => ur.User)
+					.WithMany(r => r.UserRoles)
+					.HasForeignKey(ur => ur.UserId)
+					.IsRequired();
 			});
 			#endregion
 		}
