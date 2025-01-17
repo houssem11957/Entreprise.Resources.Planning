@@ -1,5 +1,6 @@
 ﻿using DataAccess.Entities.Attendance;
 using DataAccess.Entities.Person;
+using Microsoft.AspNetCore.Identity;
 
 namespace DataAccess.Entities.Security
 {

@@ -2,17 +2,14 @@
 using DataAccess.Entities.PayRoll;
 using DataAccess.Entities.Person;
 using DataAccess.Entities.Security;
+using DataAccess.Persistence.DbContexts.DbContextSetting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Persistence.ApplicationDbContext
+namespace DataAccess.Persistence.DbContexts.ApplicationDbContext
 {
-	public class ERPDbContext: IdentityDbContext<UserEntity, ErpRole, int,
-										IdentityUserClaim<int>, ErpUserRole,
-										IdentityUserLogin<int>, IdentityRoleClaim<int>,
-										IdentityUserToken<int>>
-
+	public class ERPDbContext: DbContext
 	{
 		public ERPDbContext(DbContextOptions<ERPDbContext> options) : base(options)
 		{
@@ -21,52 +18,17 @@ namespace DataAccess.Persistence.ApplicationDbContext
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			#region Tables relationship definition
-			// banking informations
-			modelBuilder.Entity<BankingInformationsEntity>(bankingentity =>
-			{
-				bankingentity.HasOne(x => x.User)
-				.WithMany(u => u.BankingInformations)
-				.HasForeignKey(u => u.UserId)
-				.OnDelete(DeleteBehavior.Cascade);
-			});
-			// Biomitric Informations
-			modelBuilder.Entity<BiomitricInformationsEntity>(
-				biomitrcrinformation =>
-				{
-					biomitrcrinformation
-					.HasOne(d => d.User)
-					.WithOne(x => x.BiomitricInformations)
-					.HasForeignKey<BiomitricInformationsEntity>(c => c.UserId)
-					.OnDelete(DeleteBehavior.Cascade);
-				}
-				);
+
+			// config user table
+			base.OnModelCreating(modelBuilder);
+			
+			
+			modelBuilder.ApplyUserTableConfigurations();
 
 			// EmployEEeVALUATION
 			modelBuilder.Entity<EmployeeEvaluationEntity>().Property(x => x.AttendanceScore).HasColumnType("decimal").HasPrecision(10, 4).HasDefaultValue(20.00);
 			modelBuilder.Entity<EmployeeEvaluationEntity>().Property(x => x.PerformanceScore).HasColumnType("decimal").HasPrecision(10, 4).HasDefaultValue(100.00);
-			modelBuilder.Entity<EmployeeEvaluationEntity>(EmployeeEvaluation =>
-			{
-
-				EmployeeEvaluation.HasOne(x => x.User)
-				.WithMany(u => u.EmployeeEvaluation)
-				.HasForeignKey(f => f.UserId)
-				.OnDelete(DeleteBehavior.Cascade);
-			});
-			//Person Contact Informations
-			modelBuilder.Entity<PersonContactInformationsEntity>(personContact =>
-			{
-				personContact.HasOne(p => p.UserEntity)
-				.WithOne(u => u.PersonContactInformations)
-				.HasForeignKey<PersonContactInformationsEntity>(pe => pe.UserId)
-				.OnDelete(DeleteBehavior.Cascade);
-			});
-			modelBuilder.Entity<SanctionsEntity>(sanctionEntity =>
-			{
-				sanctionEntity.HasOne(s => s.user)
-				.WithMany(u => u.Sanctions)
-				.HasForeignKey(el => el.UserId)
-				.OnDelete(DeleteBehavior.Cascade);
-			});
+			
 			modelBuilder.Entity<UserCompanyProfileEntity>(userCompany =>
 			{
 				userCompany.HasOne(u => u.User)
@@ -76,15 +38,7 @@ namespace DataAccess.Persistence.ApplicationDbContext
 			});
 
 			// pointage 
-			modelBuilder.Entity<PointageEntity>(
-				p =>
-				{
-					p.HasOne(u => u.user)
-					.WithMany(po => po.Pointages)
-					.HasForeignKey(o => o.UserId)
-					.OnDelete(DeleteBehavior.Cascade);
-				}
-				);
+			
 			// working time schedule
 			modelBuilder.Entity<WorkingTimeScheduleEntity>(wts =>
 			{
@@ -113,7 +67,7 @@ namespace DataAccess.Persistence.ApplicationDbContext
 			});
 
 
-			modelBuilder.Entity<DataAccess.Entities.CommunEntities.UserPublicHolidayEntity>(entity =>
+			modelBuilder.Entity<Entities.CommunEntities.UserPublicHolidayEntity>(entity =>
 			{
 				//entity.HasKey(e => e.UserPublicHolidayId);
 
@@ -128,25 +82,11 @@ namespace DataAccess.Persistence.ApplicationDbContext
 					.OnDelete(DeleteBehavior.Cascade);
 			});
 
-			modelBuilder.Entity<ErpUserRole>(userRole =>
-			{
-				//add composed primary key (user id ,role id)
-				userRole.HasKey(ur => new { ur.UserId, ur.RoleId });
-
-				userRole.HasOne(ur => ur.Role)
-					.WithMany(r => r.UserRoles)
-					.HasForeignKey(ur => ur.RoleId)
-					.IsRequired();
-
-				userRole.HasOne(ur => ur.User)
-					.WithMany(r => r.UserRoles)
-					.HasForeignKey(ur => ur.UserId)
-					.IsRequired();
-			});
+			
 			#endregion
 		}
 		#region Tables definitions
-		DbSet<BankingInformationsEntity> BankingInformations { get; set; }
+		//DbSet<BankingInformationsEntity> BankingInformations { get; set; }
 		DbSet<BiomitricInformationsEntity> BiomitricInformations { get; set; }
 		DbSet<EmployeeEvaluationEntity> EmployeeEvaluations { get; set; }
 		DbSet<PersonContactInformationsEntity> PersonContactInformations { get; set; }
@@ -158,7 +98,7 @@ namespace DataAccess.Persistence.ApplicationDbContext
 		DbSet<LeavesEntity> Leaves { get; set; }
 		DbSet<EmployeeCategoryEntity> EmployeeCategories { get; set; }
 		DbSet<PublicHolidaysEntity> PublicHolidays { get; set; }
-		DbSet<DataAccess.Entities.CommunEntities.UserPublicHolidayEntity> UserPublicHoliday { get; set; }
+		DbSet<Entities.CommunEntities.UserPublicHolidayEntity> UserPublicHoliday { get; set; }
 		#endregion
 	}
 }

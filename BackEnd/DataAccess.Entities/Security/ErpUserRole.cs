@@ -2,9 +2,9 @@
 
 namespace DataAccess.Entities.Security
 {
-	public class ErpUserRole: IdentityUserRole<int>
+	public class ErpUserRole: Microsoft.AspNetCore.Identity.IdentityRole<int>
 	{
-		public virtual UserEntity User { get; set; }
-		public virtual ErpRole Role { get; set; }
+		/*public virtual UserEntity User { get; set; }
+		public virtual ErpRole Role { get; set; }*/
 	}
 }
